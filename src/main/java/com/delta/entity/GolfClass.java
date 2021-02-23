@@ -1,8 +1,6 @@
 package com.delta.entity;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.persistence.Entity;
 
@@ -34,9 +32,10 @@ public class GolfClass extends BaseEntity {
   
   @Getter
   @Setter
-  @ApiModelProperty(value = "教練")
-  private Integer limitSelect;
+  @ApiModelProperty(value = "限制數量")
+  private Integer limitAccount;
   
-  @Getter
-  private Set<String> registrations = new LinkedHashSet<>();
+//  @Getter
+//  @Setter
+//  private Set<String> registrations = new LinkedHashSet<>();
 }
