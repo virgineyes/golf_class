@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class GolfCalssApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GolfCalssApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(GolfCalssApplication.class, args);
+  }
 }

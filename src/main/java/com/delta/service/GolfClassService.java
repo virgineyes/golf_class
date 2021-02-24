@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.delta.dto.GolfClassDto;
 import com.delta.entity.GolfClass;
+import com.delta.entity.Registration;
 import com.delta.repository.BasicJpaRepository;
 import com.delta.repository.GolfClassRepository;
 
@@ -25,16 +26,34 @@ public class GolfClassService extends BasicService<GolfClass> {
   private GolfClassRepository repository;
 
   @Transactional
-  public void create(GolfClassDto request) {
+  public void create(GolfClassDto dto) {
     try {
       GolfClass golfClass = new GolfClass();
-      golfClass.setClasDate(request.getClasDate());
-      golfClass.setCoach(request.getCoach());
-      golfClass.setLimitAccount(request.getLimitAccount());
+      golfClass.setClasDate(dto.getClasDate());
+      golfClass.setCoach(dto.getCoach());
+      golfClass.setLimitAccount(dto.getLimitAccount());
       repository.save(golfClass);
     } catch (Exception e) {
       log.error(e.toString(), e);
     }
+  }
+  
+  @Transactional
+  public void update(String uuid, String name) {
+    try {
+      GolfClass golfClass = repository.findByUuid(uuid).orElse(new GolfClass());
+      Registration registration = new Registration();
+      registration.setName(name);
+      registration.setGolfClass(golfClass);
+      golfClass.getRegistrations().add(registration);
+      repository.save(golfClass);
+    } catch (Exception e) {
+      log.error(e.toString(), e);
+    }
+  }
+  
+  public GolfClass findByUuid(String uuid) {
+    return repository.findByUuid(uuid).orElse(new GolfClass());
   }
 
   public List<GolfClass> findAll() {
