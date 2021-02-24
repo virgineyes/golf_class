@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @SpringBootApplication(scanBasePackages = { "com.delta" })
 @EnableJpaAuditing
@@ -17,10 +16,5 @@ public class GolfCalssApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(GolfCalssApplication.class, args);
-  }
-
-  @GetMapping("")
-  public String welcome() {
-    return "hello heroku";
   }
 }

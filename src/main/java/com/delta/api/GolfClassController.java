@@ -43,6 +43,11 @@ public class GolfClassController {
   @Autowired
   private GolfClassResourceAssembler assembler;
 
+  @GetMapping("")
+  public String welcome() {
+    return "hello heroku";
+  }
+  
   @ApiOperation(value = "新增課程")
   @PostMapping("/golf/add/")
   public void create(
