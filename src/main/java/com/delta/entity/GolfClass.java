@@ -1,6 +1,5 @@
 package com.delta.entity;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +27,12 @@ public class GolfClass extends BaseEntity {
   @Getter
   @Setter
   @ApiModelProperty(value = "課程日期")
-  private LocalDate clasDate;
+  private String classDate;
+  
+  @Getter 
+  @Setter
+  @ApiModelProperty(value = "教練")
+  private String weekDate;
   
   @Getter 
   @Setter
@@ -37,8 +41,8 @@ public class GolfClass extends BaseEntity {
   
   @Getter
   @Setter
-  @ApiModelProperty(value = "限制數量")
-  private Integer limitAccount;
+  @ApiModelProperty(value = "剩餘數量")
+  private Integer remindAccount;
   
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "golfClass")
   @Getter

@@ -1,7 +1,5 @@
 package com.delta.dto;
 
-import java.time.LocalDate;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +11,11 @@ import lombok.Setter;
 @Setter
 public class GolfClassDto {
 
-  private LocalDate clasDate;
+  private String classDate;
+  
+  private String weekDate;
 
   private String coach;
   
-  private Integer limitAccount;
+  private Integer remindAccount;
 }

@@ -34,71 +34,92 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class GolfClassController {
 
-  @Autowired
-  private GolfClassService golfClassService;
+	@Autowired
+	private GolfClassService golfClassService;
 
-  @Autowired
-  private RegistrationService registrationService;
+	@Autowired
+	private RegistrationService registrationService;
 
-  @Autowired
-  private GolfClassResourceAssembler assembler;
+	@Autowired
+	private GolfClassResourceAssembler assembler;
 
-  @GetMapping("")
-  public String welcome() {
-    return "hello heroku";
-  }
-  
-  @ApiOperation(value = "新增課程")
-  @PostMapping("/golf/add/")
-  public void create(
-      @RequestBody GolfClassDto dto) {
-    try {
-      golfClassService.create(dto);
-    } catch (Exception e) {
-      log.error(e.toString(), e);
-    }
-  }
+	@GetMapping("")
+	public String welcome() {
+		return "hello heroku";
+	}
 
-  @ApiOperation(value = "刪除簡章")
-  @DeleteMapping("/golf/delete/{uuid}")
-  public void delete(@ApiParam(value = "Delete Item's uuid") @PathVariable String uuid) {
-    try {
-      golfClassService.delete(uuid);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+	@ApiOperation(value = "新增課程")
+	@PostMapping("/golf/add/")
+	public void create(@RequestBody GolfClassDto dto) {
+		try {
+			golfClassService.create(dto);
+		} catch (Exception e) {
+			log.error(e.toString(), e);
+		}
+	}
 
-  @ApiOperation(value = "取得所有課程清單")
-  @GetMapping(value = "/golf/getAll/")
-  public ResponseEntity<?> getAll() {
-    try {
-      List<GolfClass> regions = golfClassService.findAll();
-      return ResponseEntity.ok(new Resources<>(assembler.toResources(regions)));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
-    }
-  }
+	@ApiOperation(value = "刪除課程")
+	@DeleteMapping("/golf/delete/{uuid}")
+	public void delete(@ApiParam(value = "Delete Item's uuid") @PathVariable String uuid) {
+		try {
+			golfClassService.delete(uuid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-  @ApiOperation(value = "新增報名者")
-  @PutMapping("/golf/update/{uuid}/{name}")
-  public void update(@ApiParam(value = "Update item's uuid") @PathVariable String uuid,
-      @ApiParam(value = "Add registration name") @PathVariable String name) {
-    try {
-      log.info("Update uuid: " + uuid);
-      golfClassService.update(uuid, name);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+	@ApiOperation(value = "取得所有課程清單")
+	@GetMapping(value = "/golf/getAll/")
+	public ResponseEntity<?> getAll() {
+		try {
+			List<GolfClass> golfClassList = golfClassService.findAll();
+			return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
+		}
+	}
+	
+	@ApiOperation(value = "依據日期取得所有課程清單")
+	@GetMapping(value = "/golf/getAll/{WeekDate}/")
+	public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Delete Item's uuid") @PathVariable String WeekDate) {
+		try {
+			List<GolfClass> golfClassList = golfClassService.findByWeekDate(WeekDate);
+			return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
+		}
+	}
 
-  @ApiOperation(value = "刪除報名者")
-  @DeleteMapping("/golf/delete/registration/{uuid}")
-  public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
-    try {
-      registrationService.delete(uuid);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+	@ApiOperation(value = "新增報名者")
+	@PutMapping("/golf/update/{uuid}/{name}")
+	public ResponseEntity<?> update(@ApiParam(value = "Update item's uuid") @PathVariable List<String> uuids,
+			@ApiParam(value = "Add registration name") @PathVariable String name) {
+		try {
+			StringBuilder result = new StringBuilder();
+			uuids.forEach(uuid -> {
+				log.info("Update uuid: " + uuid);
+				if (golfClassService.update(uuid, name)) {
+					GolfClass golfClass = golfClassService.findByUuid(uuid);
+					result.append(golfClass.getClassDate());
+					result.append(" - ");
+					result.append(golfClass.getCoach());
+					result.append("(" + golfClass.getRemindAccount() + ")");
+					result.append("\n");
+				}
+			});
+			return ResponseEntity.badRequest().body(new Resource<>(result.toString()));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
+		}
+	}
+
+	@ApiOperation(value = "刪除報名者")
+	@DeleteMapping("/golf/delete/registration/{uuid}")
+	public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
+		try {
+			registrationService.delete(uuid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -1,5 +1,7 @@
 package com.delta.repository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.delta.entity.GolfClass;
@@ -10,5 +12,5 @@ import com.delta.entity.GolfClass;
  */
 @Repository
 public interface GolfClassRepository extends BasicJpaRepository<GolfClass> {
-
+	 List<GolfClass> findByWeekDate(String weekDate);
 }
