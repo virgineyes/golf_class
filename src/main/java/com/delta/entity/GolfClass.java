@@ -1,8 +1,13 @@
 package com.delta.entity;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +30,7 @@ public class GolfClass extends BaseEntity {
   @ApiModelProperty(value = "課程日期")
   private LocalDate clasDate;
   
-  @Getter
+  @Getter 
   @Setter
   @ApiModelProperty(value = "教練")
   private String coach;
@@ -35,7 +40,8 @@ public class GolfClass extends BaseEntity {
   @ApiModelProperty(value = "限制數量")
   private Integer limitAccount;
   
-//  @Getter
-//  @Setter
-//  private Set<String> registrations = new LinkedHashSet<>();
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "golfClass")
+  @Getter
+  @Setter
+  private Set<Registration> registrations = new HashSet<>();
 }

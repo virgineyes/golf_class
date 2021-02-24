@@ -1,6 +1,9 @@
 package com.delta.resource;
 
+import java.util.Set;
+
 import com.delta.entity.GolfClass;
+import com.delta.entity.Registration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
@@ -14,7 +17,12 @@ public class GolfClassResource extends BaseEntityResource<GolfClass> {
   @Setter
   @Getter
   private GolfClass entity;
-
+  
+  @JsonInclude
+  public Set<Registration> getRegistrations() {
+    return entity.getRegistrations();
+  }
+  
   @Override
   public String getResourceType() {
     return GolfClass.class.getSimpleName();
