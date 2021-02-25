@@ -80,10 +80,16 @@ public class GolfClassController {
 	}
 	
 	@ApiOperation(value = "依據日期取得所有課程清單")
-	@GetMapping(value = "/golf/getAll/{WeekDate}/")
-	public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Delete Item's uuid") @PathVariable String WeekDate) {
+	@GetMapping(value = "/golf/getAll/{weekDate}/")
+	public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Week Date") @PathVariable String weekDate) {
 		try {
-			List<GolfClass> golfClassList = golfClassService.findByWeekDate(WeekDate);
+			String weekDateCh = "日";
+			if (weekDate.equals("Sat")) {
+				weekDateCh = "六";	
+			} else if (weekDate.equals("Sun")) {
+				weekDateCh = "日";	
+			}
+			List<GolfClass> golfClassList = golfClassService.findByWeekDate(weekDateCh);
 			return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
