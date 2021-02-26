@@ -45,7 +45,7 @@ public class GolfClassController {
 
 	@GetMapping("")
 	public String welcome() {
-		return "hello heroku";
+		return "welcome";
 	}
 
 	@ApiOperation(value = "新增課程")
