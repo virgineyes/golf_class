@@ -18,7 +18,6 @@ import com.delta.assembler.GolfClassResourceAssembler;
 import com.delta.dto.GolfClassDto;
 import com.delta.entity.GolfClass;
 import com.delta.service.GolfClassService;
-import com.delta.service.RegistrationService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,9 +35,6 @@ public class GolfClassController {
 
 	@Autowired
 	private GolfClassService golfClassService;
-
-	@Autowired
-	private RegistrationService registrationService;
 
 	@Autowired
 	private GolfClassResourceAssembler assembler;
@@ -138,7 +134,6 @@ public class GolfClassController {
 	public void deleteRegistration(@ApiParam(value = "golf class uuid") @PathVariable String classUuid,
 			@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
 		try {
-			registrationService.deleteByUuid(uuid);
 			golfClassService.addRemindAccound(classUuid);
 		} catch (Exception e) {
 			e.printStackTrace();

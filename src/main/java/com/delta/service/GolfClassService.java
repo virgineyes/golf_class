@@ -24,6 +24,9 @@ public class GolfClassService extends BasicService<GolfClass> {
 
 	@Autowired
 	private GolfClassRepository repository;
+	
+	@Autowired
+	private RegistrationService registrationService;
 
 	@Transactional
 	public void create(GolfClassDto dto) {
@@ -63,6 +66,7 @@ public class GolfClassService extends BasicService<GolfClass> {
 	@Transactional
 	public void addRemindAccound(String uuid) {
 		try {
+			registrationService.deleteByUuid(uuid);
 			GolfClass golfClass = repository.findByUuid(uuid).orElse(new GolfClass());
 			golfClass.setRemindAccount(golfClass.getRemindAccount() + 1);
 			repository.save(golfClass);
