@@ -1,6 +1,7 @@
 package com.delta.api;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.delta.assembler.GolfClassResourceAssembler;
 import com.delta.dto.GolfClassDto;
 import com.delta.entity.GolfClass;
+import com.delta.entity.Registration;
 import com.delta.service.GolfClassService;
 import com.delta.service.RegistrationService;
 
@@ -78,16 +80,16 @@ public class GolfClassController {
 			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
 		}
 	}
-	
+
 	@ApiOperation(value = "依據日期取得所有課程清單")
 	@GetMapping(value = "/golf/getAll/{weekDate}/")
 	public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Week Date") @PathVariable String weekDate) {
 		try {
 			String weekDateCh = "日";
 			if (weekDate.equals("Sat")) {
-				weekDateCh = "六";	
+				weekDateCh = "六";
 			} else if (weekDate.equals("Sun")) {
-				weekDateCh = "日";	
+				weekDateCh = "日";
 			}
 			List<GolfClass> golfClassList = golfClassService.findByWeekDate(weekDateCh);
 			return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
@@ -97,23 +99,37 @@ public class GolfClassController {
 	}
 
 	@ApiOperation(value = "新增報名者")
-	@PutMapping("/golf/update/{uuid}/{name}")
-	public ResponseEntity<?> update(@ApiParam(value = "Update item's uuid") @PathVariable List<String> uuids,
+	@PutMapping("/golf/update/{name}")
+	public ResponseEntity<?> update(@RequestBody List<String> uuids,
 			@ApiParam(value = "Add registration name") @PathVariable String name) {
 		try {
 			StringBuilder result = new StringBuilder();
 			uuids.forEach(uuid -> {
 				log.info("Update uuid: " + uuid);
+				GolfClass golfClass = golfClassService.findByUuid(uuid);
 				if (golfClassService.update(uuid, name)) {
-					GolfClass golfClass = golfClassService.findByUuid(uuid);
 					result.append(golfClass.getClassDate());
+					result.append(" (");
+					result.append(golfClass.getWeekDate());
+					result.append(")");
 					result.append(" - ");
 					result.append(golfClass.getCoach());
-					result.append("(" + golfClass.getRemindAccount() + ")");
-					result.append("\n");
+					result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
+					result.append(" <b>報名成功</b>");
+					result.append("<br/>");
+				} else {
+					result.append(golfClass.getClassDate());
+					result.append(" (");
+					result.append(golfClass.getWeekDate());
+					result.append(") ");
+					result.append(" - ");
+					result.append(golfClass.getCoach());
+					result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
+					result.append(" <b>報名失敗</b>");
+					result.append("<br/>");
 				}
 			});
-			return ResponseEntity.badRequest().body(new Resource<>(result.toString()));
+			return ResponseEntity.accepted().body(new Resource<>(result.toString()));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
 		}
@@ -123,6 +139,7 @@ public class GolfClassController {
 	@DeleteMapping("/golf/delete/registration/{uuid}")
 	public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
 		try {
+			System.out.print("delete: " + uuid);
 			registrationService.delete(uuid);
 		} catch (Exception e) {
 			e.printStackTrace();
