@@ -134,7 +134,7 @@ public class GolfClassController {
 	public void deleteRegistration(@ApiParam(value = "golf class uuid") @PathVariable String classUuid,
 			@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
 		try {
-			golfClassService.addRemindAccound(classUuid);
+			golfClassService.addRemindAccound(uuid, classUuid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

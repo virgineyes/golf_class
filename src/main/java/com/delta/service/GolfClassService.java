@@ -11,6 +11,7 @@ import com.delta.entity.GolfClass;
 import com.delta.entity.Registration;
 import com.delta.repository.BasicJpaRepository;
 import com.delta.repository.GolfClassRepository;
+import com.delta.repository.RegistrationRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,9 +25,9 @@ public class GolfClassService extends BasicService<GolfClass> {
 
 	@Autowired
 	private GolfClassRepository repository;
-	
+
 	@Autowired
-	private RegistrationService registrationService;
+	private RegistrationRepository registrationRepository;
 
 	@Transactional
 	public void create(GolfClassDto dto) {
@@ -64,10 +65,10 @@ public class GolfClassService extends BasicService<GolfClass> {
 	}
 
 	@Transactional
-	public void addRemindAccound(String uuid) {
+	public void addRemindAccound(String uuid, String classUuid) {
 		try {
-			registrationService.deleteByUuid(uuid);
-			GolfClass golfClass = repository.findByUuid(uuid).orElse(new GolfClass());
+			registrationRepository.deleteByUuid(uuid);
+			GolfClass golfClass = repository.findByUuid(classUuid).orElse(new GolfClass());
 			golfClass.setRemindAccount(golfClass.getRemindAccount() + 1);
 			repository.save(golfClass);
 		} catch (Exception e) {
