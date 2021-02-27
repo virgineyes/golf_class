@@ -60,6 +60,17 @@ public class GolfClassService extends BasicService<GolfClass> {
 		}
 	}
 
+	@Transactional
+	public void addRemindAccound(String uuid) {
+		try {
+			GolfClass golfClass = repository.findByUuid(uuid).orElse(new GolfClass());
+			golfClass.setRemindAccount(golfClass.getRemindAccount() + 1);
+			repository.save(golfClass);
+		} catch (Exception e) {
+			log.error(e.toString(), e);
+		}
+	}
+
 	public GolfClass findByUuid(String uuid) {
 		return repository.findByUuid(uuid).orElse(new GolfClass());
 	}
@@ -67,7 +78,7 @@ public class GolfClassService extends BasicService<GolfClass> {
 	public List<GolfClass> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public List<GolfClass> findByWeekDate(String weekDate) {
 		return repository.findByWeekDate(weekDate);
 	}

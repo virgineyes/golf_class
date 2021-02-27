@@ -1,7 +1,6 @@
 package com.delta.api;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.delta.assembler.GolfClassResourceAssembler;
 import com.delta.dto.GolfClassDto;
 import com.delta.entity.GolfClass;
-import com.delta.entity.Registration;
 import com.delta.service.GolfClassService;
 import com.delta.service.RegistrationService;
 
@@ -136,11 +134,12 @@ public class GolfClassController {
 	}
 
 	@ApiOperation(value = "刪除報名者")
-	@DeleteMapping("/golf/delete/registration/{uuid}")
-	public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
+	@DeleteMapping("/golf/delete/registration/{classUuid}/{uuid}")
+	public void deleteRegistration(@ApiParam(value = "golf class uuid") @PathVariable String classUuid,
+			@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
 		try {
-			System.out.print("delete: " + uuid);
-			registrationService.delete(uuid);
+			registrationService.deleteByUuid(uuid);
+			golfClassService.addRemindAccound(classUuid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -44,7 +44,7 @@ public class GolfClass extends BaseEntity {
   @ApiModelProperty(value = "剩餘數量")
   private Integer remindAccount;
   
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "golfClass")
+  @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "golfClass", orphanRemoval = true)
   @Getter
   @Setter
   private Set<Registration> registrations = new HashSet<>();
