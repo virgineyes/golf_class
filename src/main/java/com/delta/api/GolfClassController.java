@@ -131,8 +131,8 @@ public class GolfClassController {
 
 	@ApiOperation(value = "刪除報名者")
 	@DeleteMapping("/golf/delete/registration/{classUuid}/{uuid}")
-	public void deleteRegistration(@ApiParam(value = "golf class uuid") @PathVariable String classUuid,
-			@ApiParam(value = "Delete registration uuid") @PathVariable String uuid) {
+	public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid,
+			@ApiParam(value = "golf class uuid") @PathVariable String classUuid) {
 		try {
 			golfClassService.addRemindAccound(uuid, classUuid);
 		} catch (Exception e) {

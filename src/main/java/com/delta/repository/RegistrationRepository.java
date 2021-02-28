@@ -14,6 +14,7 @@ import com.delta.entity.Registration;
  */
 @Repository
 public interface RegistrationRepository extends BasicJpaRepository<Registration> {
+	
 	@Modifying
 	@Query(value = "delete from Registration r WHERE r.uuid = :uuid")
 	void deleteByUuid(@Param("uuid") String uuid);

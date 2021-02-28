@@ -67,10 +67,12 @@ public class GolfClassService extends BasicService<GolfClass> {
 	@Transactional
 	public void addRemindAccound(String uuid, String classUuid) {
 		try {
-			registrationRepository.deleteByUuid(uuid);
-			GolfClass golfClass = repository.findByUuid(classUuid).orElse(new GolfClass());
-			golfClass.setRemindAccount(golfClass.getRemindAccount() + 1);
-			repository.save(golfClass);
+			if (registrationRepository.findByUuid(uuid).isPresent()) {
+				registrationRepository.deleteByUuid(uuid);
+				GolfClass golfClass = repository.findByUuid(classUuid).orElse(new GolfClass());
+				golfClass.setRemindAccount(golfClass.getRemindAccount() + 1);
+				repository.save(golfClass);
+			}
 		} catch (Exception e) {
 			log.error(e.toString(), e);
 		}
