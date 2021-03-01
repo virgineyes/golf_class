@@ -1,5 +1,9 @@
 package com.delta;
 
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -14,7 +18,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class GolfCalssApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(GolfCalssApplication.class, args);
-  }
+	@PostConstruct
+	public void init() {
+		// Setting Spring Boot SetTimeZone
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(GolfCalssApplication.class, args);
+	}
 }
