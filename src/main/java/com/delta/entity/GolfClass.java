@@ -31,8 +31,13 @@ public class GolfClass extends BaseEntity {
   
   @Getter 
   @Setter
-  @ApiModelProperty(value = "教練")
+  @ApiModelProperty(value = "星期幾")
   private String weekDate;
+  
+  @Getter 
+  @Setter
+  @ApiModelProperty(value = "是否額外新增")
+  private Boolean additional;
   
   @Getter 
   @Setter

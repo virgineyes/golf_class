@@ -33,110 +33,111 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class GolfClassController {
 
-	@Autowired
-	private GolfClassService golfClassService;
+  @Autowired
+  private GolfClassService golfClassService;
 
-	@Autowired
-	private GolfClassResourceAssembler assembler;
+  @Autowired
+  private GolfClassResourceAssembler assembler;
 
-	@GetMapping("")
-	public String welcome() {
-		return "welcome";
-	}
+  @GetMapping("")
+  public String welcome() {
+    return "welcome";
+  }
 
-	@ApiOperation(value = "新增課程")
-	@PostMapping("/golf/add/")
-	public void create(@RequestBody GolfClassDto dto) {
-		try {
-			golfClassService.create(dto);
-		} catch (Exception e) {
-			log.error(e.toString(), e);
-		}
-	}
+  @ApiOperation(value = "新增課程")
+  @PostMapping("/golf/add/")
+  public void create(@RequestBody GolfClassDto dto) {
+    try {
+      golfClassService.create(dto);
+    } catch (Exception e) {
+      log.error(e.toString(), e);
+    }
+  }
 
-	@ApiOperation(value = "刪除課程")
-	@DeleteMapping("/golf/delete/{uuid}")
-	public void delete(@ApiParam(value = "Delete Item's uuid") @PathVariable String uuid) {
-		try {
-			golfClassService.delete(uuid);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  @ApiOperation(value = "刪除課程")
+  @DeleteMapping("/golf/delete/{uuid}")
+  public void delete(@ApiParam(value = "Delete Item's uuid") @PathVariable String uuid) {
+    try {
+      golfClassService.delete(uuid);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-	@ApiOperation(value = "取得所有課程清單")
-	@GetMapping(value = "/golf/getAll/")
-	public ResponseEntity<?> getAll() {
-		try {
-			List<GolfClass> golfClassList = golfClassService.findAll();
-			return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
-		}
-	}
+  @ApiOperation(value = "取得所有課程清單")
+  @GetMapping(value = "/golf/getAll/")
+  public ResponseEntity<?> getAll() {
+    try {
+      List<GolfClass> golfClassList = golfClassService.findAll();
+      return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
+    }
+  }
 
-	@ApiOperation(value = "依據日期取得所有課程清單")
-	@GetMapping(value = "/golf/getAll/{weekDate}/")
-	public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Week Date") @PathVariable String weekDate) {
-		try {
-			String weekDateCh = "日";
-			if (weekDate.equals("Sat")) {
-				weekDateCh = "六";
-			} else if (weekDate.equals("Sun")) {
-				weekDateCh = "日";
-			}
-			List<GolfClass> golfClassList = golfClassService.findByWeekDate(weekDateCh);
-			return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
-		}
-	}
+  @ApiOperation(value = "依據日期取得所有課程清單")
+  @GetMapping(value = "/golf/getAll/{weekDate}/{additional}")
+  public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Week Date") @PathVariable String weekDate,
+      @ApiParam(value = "additional") @PathVariable boolean additional) {
+    try {
+      String weekDateCh = "日";
+      if (weekDate.equals("Sat")) {
+        weekDateCh = "六";
+      } else if (weekDate.equals("Sun")) {
+        weekDateCh = "日";
+      }
+      List<GolfClass> golfClassList = golfClassService.findByWeekDateAndAdditional(weekDateCh, additional);
+      return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
+    }
+  }
 
-	@ApiOperation(value = "新增報名者")
-	@PutMapping("/golf/update/{name}")
-	public ResponseEntity<?> update(@RequestBody List<String> uuids,
-			@ApiParam(value = "Add registration name") @PathVariable String name) {
-		try {
-			StringBuilder result = new StringBuilder();
-			uuids.forEach(uuid -> {
-				log.info("Update uuid: " + uuid);
-				GolfClass golfClass = golfClassService.findByUuid(uuid);
-				if (golfClassService.update(uuid, name)) {
-					result.append(golfClass.getClassDate());
-					result.append(" (");
-					result.append(golfClass.getWeekDate());
-					result.append(")");
-					result.append(" - ");
-					result.append(golfClass.getCoach());
-					result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
-					result.append(" <b>報名成功</b>");
-					result.append("<br/>");
-				} else {
-					result.append(golfClass.getClassDate());
-					result.append(" (");
-					result.append(golfClass.getWeekDate());
-					result.append(") ");
-					result.append(" - ");
-					result.append(golfClass.getCoach());
-					result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
-					result.append(" <b>報名失敗</b>");
-					result.append("<br/>");
-				}
-			});
-			return ResponseEntity.accepted().body(new Resource<>(result.toString()));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
-		}
-	}
+  @ApiOperation(value = "新增報名者")
+  @PutMapping("/golf/update/{name}")
+  public ResponseEntity<?> update(@RequestBody List<String> uuids,
+      @ApiParam(value = "Add registration name") @PathVariable String name) {
+    try {
+      StringBuilder result = new StringBuilder();
+      uuids.forEach(uuid -> {
+        log.info("Update uuid: " + uuid);
+        GolfClass golfClass = golfClassService.findByUuid(uuid);
+        if (golfClassService.update(uuid, name)) {
+          result.append(golfClass.getClassDate());
+          result.append(" (");
+          result.append(golfClass.getWeekDate());
+          result.append(")");
+          result.append(" - ");
+          result.append(golfClass.getCoach());
+          result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
+          result.append(" <b>報名成功</b>");
+          result.append("<br/>");
+        } else {
+          result.append(golfClass.getClassDate());
+          result.append(" (");
+          result.append(golfClass.getWeekDate());
+          result.append(") ");
+          result.append(" - ");
+          result.append(golfClass.getCoach());
+          result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
+          result.append(" <b>報名失敗</b>");
+          result.append("<br/>");
+        }
+      });
+      return ResponseEntity.accepted().body(new Resource<>(result.toString()));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
+    }
+  }
 
-	@ApiOperation(value = "刪除報名者")
-	@DeleteMapping("/golf/delete/registration/{classUuid}/{uuid}")
-	public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid,
-			@ApiParam(value = "golf class uuid") @PathVariable String classUuid) {
-		try {
-			golfClassService.addRemindAccound(uuid, classUuid);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  @ApiOperation(value = "刪除報名者")
+  @DeleteMapping("/golf/delete/registration/{classUuid}/{uuid}")
+  public void deleteRegistration(@ApiParam(value = "Delete registration uuid") @PathVariable String uuid,
+      @ApiParam(value = "golf class uuid") @PathVariable String classUuid) {
+    try {
+      golfClassService.addRemindAccound(uuid, classUuid);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

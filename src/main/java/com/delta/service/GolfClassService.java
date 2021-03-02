@@ -37,6 +37,7 @@ public class GolfClassService extends BasicService<GolfClass> {
 			golfClass.setWeekDate(dto.getWeekDate());
 			golfClass.setCoach(dto.getCoach());
 			golfClass.setRemindAccount(dto.getRemindAccount());
+			golfClass.setAdditional(dto.getAdditional());
 			repository.save(golfClass);
 		} catch (Exception e) {
 			log.error(e.toString(), e);
@@ -86,8 +87,8 @@ public class GolfClassService extends BasicService<GolfClass> {
 		return repository.findAll();
 	}
 
-	public List<GolfClass> findByWeekDate(String weekDate) {
-		return repository.findByWeekDate(weekDate);
+	public List<GolfClass> findByWeekDateAndAdditional(String weekDate, boolean additional) {
+		return repository.findByWeekDateAndAdditional(weekDate, additional);
 	}
 
 	@Override

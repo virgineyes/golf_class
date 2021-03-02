@@ -12,5 +12,5 @@ import com.delta.entity.GolfClass;
  */
 @Repository
 public interface GolfClassRepository extends BasicJpaRepository<GolfClass> {
-	 List<GolfClass> findByWeekDate(String weekDate);
+	 List<GolfClass> findByWeekDateAndAdditional(String weekDate, boolean additional);
 }

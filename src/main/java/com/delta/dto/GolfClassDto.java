@@ -18,4 +18,6 @@ public class GolfClassDto {
   private String coach;
   
   private Integer remindAccount;
+  
+  private Boolean additional;
 }
