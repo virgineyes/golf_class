@@ -30,7 +30,7 @@ public class GolfClassService extends BasicService<GolfClass> {
 	private RegistrationRepository registrationRepository;
 
 	@Transactional
-	public void create(GolfClassDto dto) {
+	public GolfClass create(GolfClassDto dto) {
 		try {
 			GolfClass golfClass = new GolfClass();
 			golfClass.setClassDate(dto.getClassDate());
@@ -38,10 +38,11 @@ public class GolfClassService extends BasicService<GolfClass> {
 			golfClass.setCoach(dto.getCoach());
 			golfClass.setRemindAccount(dto.getRemindAccount());
 			golfClass.setAdditional(dto.getAdditional());
-			repository.save(golfClass);
+			return repository.save(golfClass);
 		} catch (Exception e) {
 			log.error(e.toString(), e);
 		}
+		return null;
 	}
 
 	@Transactional

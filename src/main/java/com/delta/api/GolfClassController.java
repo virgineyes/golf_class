@@ -46,12 +46,13 @@ public class GolfClassController {
 
   @ApiOperation(value = "新增課程")
   @PostMapping("/golf/add/")
-  public void create(@RequestBody GolfClassDto dto) {
+  public GolfClass create(@RequestBody GolfClassDto dto) {
     try {
-      golfClassService.create(dto);
+      return golfClassService.create(dto);
     } catch (Exception e) {
       log.error(e.toString(), e);
     }
+	return null;
   }
 
   @ApiOperation(value = "刪除課程")
@@ -80,13 +81,7 @@ public class GolfClassController {
   public ResponseEntity<?> getAllByWeekDate(@ApiParam(value = "Week Date") @PathVariable String weekDate,
       @ApiParam(value = "additional") @PathVariable boolean additional) {
     try {
-      String weekDateCh = "日";
-      if (weekDate.equals("Sat")) {
-        weekDateCh = "六";
-      } else if (weekDate.equals("Sun")) {
-        weekDateCh = "日";
-      }
-      List<GolfClass> golfClassList = golfClassService.findByWeekDateAndAdditional(weekDateCh, additional);
+      List<GolfClass> golfClassList = golfClassService.findByWeekDateAndAdditional(weekDate, additional);
       return ResponseEntity.ok(new Resources<>(assembler.toResources(golfClassList)));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(new Resource<>(e.toString()));
