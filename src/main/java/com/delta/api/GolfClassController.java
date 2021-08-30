@@ -102,6 +102,12 @@ public class GolfClassController {
       uuids.forEach(uuid -> {
         log.info("Update uuid: " + uuid);
         GolfClass golfClass = golfClassService.findByUuid(uuid);
+        if (golfClass.getWeekDate().equals(6)) {
+        	golfClass.setWeekDate("六");
+        } else if (golfClass.getWeekDate().equals(0)) {
+        	golfClass.setWeekDate("日");
+        }
+        
         if (golfClassService.update(uuid, name)) {
           result.append(golfClass.getClassDate());
           result.append(" (");
@@ -120,7 +126,7 @@ public class GolfClassController {
           result.append(" - ");
           result.append(golfClass.getCoach());
           result.append("(剩餘:" + golfClass.getRemindAccount() + ")");
-          result.append(" <b>報名失敗</b>");
+          result.append(" <b style=\"color:red\">報名失敗</b>");
           result.append("<br/>");
         }
       });
