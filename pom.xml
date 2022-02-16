@@ -126,11 +126,11 @@
         <version>1.12.0</version>  
         <configuration> 
           <schemaVersion>v2</schemaVersion>  
-          <subscriptionId>05c3f26c-9e76-4f6a-aa7e-b19b8ab6b4c8</subscriptionId>  
-          <resourceGroup>golf-class-resource</resourceGroup>  
+          <subscriptionId>74770298-f1f0-46f1-b991-b04ee9b592a4</subscriptionId>  
+          <resourceGroup>GolfClassResource</resourceGroup>  
           <appName>golf-class-backend</appName>  
           <pricingTier>B1</pricingTier>  
-          <region>westeurope</region>  
+          <region>westus</region>  
           <runtime> 
             <os>Linux</os>  
             <javaVersion>Java 8</javaVersion>  
