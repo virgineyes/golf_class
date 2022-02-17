@@ -102,9 +102,9 @@ public class GolfClassController {
       uuids.forEach(uuid -> {
         log.info("Update uuid: " + uuid);
         GolfClass golfClass = golfClassService.findByUuid(uuid);
-        if (golfClass.getWeekDate().equals(6)) {
+        if (golfClass.getWeekDate().equals("6")) {
         	golfClass.setWeekDate("六");
-        } else if (golfClass.getWeekDate().equals(0)) {
+        } else if (golfClass.getWeekDate().equals("0")) {
         	golfClass.setWeekDate("日");
         }
         
