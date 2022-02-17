@@ -130,7 +130,7 @@
           <resourceGroup>GolfClassResource</resourceGroup>  
           <appName>golf-class-backend</appName>  
           <pricingTier>B1</pricingTier>  
-          <region>westeurope</region>  
+          <region>westus</region>  
           <runtime> 
             <os>Linux</os>  
             <javaVersion>Java 8</javaVersion>  
