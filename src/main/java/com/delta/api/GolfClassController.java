@@ -101,17 +101,18 @@ public class GolfClassController {
       StringBuilder result = new StringBuilder();
       uuids.forEach(uuid -> {
         log.info("Update uuid: " + uuid);
+        String weekDate = "";
         GolfClass golfClass = golfClassService.findByUuid(uuid);
         if (golfClass.getWeekDate().equals("6")) {
-        	golfClass.setWeekDate("六");
+        	weekDate = "六";
         } else if (golfClass.getWeekDate().equals("0")) {
-        	golfClass.setWeekDate("日");
+        	weekDate = "日";
         }
         
         if (golfClassService.update(uuid, name)) {
           result.append(golfClass.getClassDate());
           result.append(" (");
-          result.append(golfClass.getWeekDate());
+          result.append(weekDate);
           result.append(")");
           result.append(" - ");
           result.append(golfClass.getCoach());
@@ -121,7 +122,7 @@ public class GolfClassController {
         } else {
           result.append(golfClass.getClassDate());
           result.append(" (");
-          result.append(golfClass.getWeekDate());
+          result.append(weekDate);
           result.append(") ");
           result.append(" - ");
           result.append(golfClass.getCoach());
