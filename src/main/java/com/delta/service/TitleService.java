@@ -36,6 +36,7 @@ public class TitleService extends BasicService<Title> {
           if (titleOpt.isPresent()) {
             title = titleOpt.get();
           } 
+          title.setPageName(dto.getPageName());
           title.setTitle(dto.getTitle());
           title.setSubTitle(dto.getSubTitle());
           repository.save(title);

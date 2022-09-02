@@ -39,10 +39,10 @@ public class GolfClassController {
   @Autowired
   private GolfClassResourceAssembler assembler;
 
-  @GetMapping("*")
-  public String welcomeAll() {
-    return "welcome all";
-  }
+//  @GetMapping("*")
+//  public String welcomeAll() {
+//    return "welcome all";
+//  }
   
   @GetMapping("")
   public String welcome() {
